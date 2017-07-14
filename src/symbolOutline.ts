@@ -1,4 +1,4 @@
-import { Event, EventEmitter, ExtensionContext, SymbolKind, SymbolInformation, TextDocument, TextEditor, TreeDataProvider, TreeItem, TreeItemCollapsibleState, commands, window, workspace } from 'vscode';
+import { Event, EventEmitter, ExtensionContext, SymbolKind, SymbolInformation, TextDocument, TextEditor, TreeDataProvider, TreeItem, TreeItemCollapsibleState, WorkspaceConfiguration, commands, window, workspace } from 'vscode';
 import * as path from 'path';
 
 export class SymbolNode {
@@ -55,6 +55,7 @@ export class SymbolOutlineProvider implements TreeDataProvider<SymbolNode> {
     readonly onDidChangeTreeData: Event<SymbolNode | null> = this._onDidChangeTreeData.event;
 
     private context: ExtensionContext;
+    private config: WorkspaceConfiguration;
     private tree: SymbolNode;
     private editor: TextEditor;
 
@@ -77,13 +78,16 @@ export class SymbolOutlineProvider implements TreeDataProvider<SymbolNode> {
                 parent.addChild(node);
                 return {...knownContainerScopes, [symbol.name]: node};
             }, {'': tree});
-            tree.sort();
+
+            if (this.config.get('sort'))
+              tree.sort();
         }
         this.tree = tree;
     }
 
     constructor(context: ExtensionContext) {
         this.context = context;
+        this.config = workspace.getConfiguration('outline');
         window.onDidChangeActiveTextEditor(editor => {
             if (editor) {
                 this.refresh();

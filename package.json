@@ -35,6 +35,15 @@
                 }
             }
         ],
+        "configuration": {
+            "properties": {
+              "outline.sort": {
+                "type": "boolean",
+                "description": "If true, the outline will be sorted.",
+                "default": true
+              }
+            }
+        },
         "views": {
             "explorer": [
                 {

@@ -12,7 +12,7 @@ The necessary APIs are only available in VSCode version 1.13 and up.
 
 ## Extension Settings
 
-There are currently no settings.
+`outline.sort`: Controls if the outline is automatically sorted. Defaults to `true`.
 
 ## Known Issues
 
